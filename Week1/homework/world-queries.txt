@@ -1,4 +1,4 @@
-Answers for the world queries go here:
+﻿Answers for the world queries go here:
 
 For example:
 
@@ -38,3 +38,170 @@ SELECT city.Name FROM city JOIN country ON city.CountryCode = country.Code WHERE
 | Alkmaar           |
 +-------------------+
 28 rows in set (0.00 sec)
+
+2.
+select Name, CountryCode, Population from City 
+Where CountryCode = 'NLD' and Name= 'Rotterdam';
+
+	Name	CountryCode	Population
+	Rotterdam	NLD	593321
+
+3.
+select Name, Continent from Country
+Where Continent = 'North America';
+
+Aruba	North America
+Anguilla	North America
+Netherlands Antilles	North America
+Antigua and Barbuda	North America
+Bahamas	North America
+Belize	North America
+Bermuda	North America
+Barbados	North America
+Canada	North America
+Costa Rica	North America
+Cuba	North America
+Cayman Islands	North America
+Dominica	North America
+Dominican Republic	North America
+Guadeloupe	North America
+Grenada	North America
+Greenland	North America
+Guatemala	North America
+Honduras	North America
+Haiti	North America
+Jamaica	North America
+Saint Kitts and Nevis	North America
+Saint Lucia	North America
+Mexico	North America
+Montserrat	North America
+Martinique	North America
+Nicaragua	North America
+Panama	North America
+Puerto Rico	North America
+El Salvador	North America
+Saint Pierre and Miquelon	North America
+Turks and Caicos Islands	North America
+Trinidad and Tobago	North America
+United States	North America
+Saint Vincent and the Grenadines	North America
+Virgin Islands, British	North America
+Virgin Islands, U.S.	North America
+
+4.
+
+
+select Name, SurfaceArea from Country 
+order by SurfaceArea desc
+ limit 10;
+
+Russian Federation	17075400.00
+Antarctica	13120000.00
+Canada	9970610.00
+China	9572900.00
+United States	9363520.00
+Brazil	8547403.00
+Australia	7741220.00
+India	3287263.00
+Argentina	2780400.00
+Kazakstan	2724900.00
+
+5.
+select Name, Population from City
+ order by population desc 
+limit 10;
+
+Mumbai (Bombay)	10500000
+Seoul	9981619
+São Paulo	9968485
+Shanghai	9696300
+Jakarta	9604900
+Karachi	9269265
+Istanbul	8787958
+Ciudad de México	8591309
+Moscow	8389200
+New York	8008278
+
+6.
+select Name, Population from Country
+ where Name like 'P%'
+ order by population desc 
+limit 3;
+
+Pakistan	156483000
+Philippines	75967000
+Poland	38653600
+
+7.
+
+
+select sum(population) from Country 
+where Continent = 'Asia'; 
+
+
+sum(population)
+3705025700
+
+8.
+select name, code, language from country 
+
+inner join countrylanguage on country.code = countrylanguage.countrycode
+
+where continent = 'South America';
+
+Argentina	ARG	Indian Languages
+Argentina	ARG	Italian
+Argentina	ARG	Spanish
+Bolivia	BOL	Aimará
+Bolivia	BOL	Guaraní
+Bolivia	BOL	Ketšua
+Bolivia	BOL	Spanish
+Brazil	BRA	German
+Brazil	BRA	Indian Languages
+Brazil	BRA	Italian
+Brazil	BRA	Japanese
+Brazil	BRA	Portuguese
+Chile	CHL	Aimará
+Chile	CHL	Araucan
+Chile	CHL	Rapa nui
+Chile	CHL	Spanish
+Colombia	COL	Arawakan
+Colombia	COL	Caribbean
+Colombia	COL	Chibcha
+Colombia	COL	Creole English
+Colombia	COL	Spanish
+Ecuador	ECU	Ketšua
+Ecuador	ECU	Spanish
+Falkland Islands	FLK	English
+French Guiana	GUF	Creole French
+French Guiana	GUF	Indian Languages
+Guyana	GUY	Arawakan
+Guyana	GUY	Caribbean
+Guyana	GUY	Creole English
+Peru	PER	Aimará
+Peru	PER	Ketšua
+Peru	PER	Spanish
+Paraguay	PRY	German
+Paraguay	PRY	Guaraní
+Paraguay	PRY	Portuguese
+Paraguay	PRY	Spanish
+Suriname	SUR	Hindi
+Suriname	SUR	Sranantonga
+Uruguay	URY	Spanish
+Venezuela	VEN	Goajiro
+Venezuela	VEN	Spanish
+Venezuela	VEN	Warrau
+
+9. 
+select distinct countrylanguage.language, city.name from countrylanguage
+
+inner join city on countrylanguage.countrycode = city.countrycode
+
+where city.name = 'barcelona';
+
+Basque	Barcelona
+Catalan	Barcelona
+Galecian Barcelona
+Spanish	Barcelona
+Goajiro	Barcelona
+Warrau	Barcelona
