@@ -21,74 +21,75 @@ class TodoModel {
         });
     }
 
-    var createTodoItem = 'INSERT INTO todo_items(id, text, is_completed, user_id) VALUES(?,?,?,?)';
-    var updateTodoItem = 'UPDATE todo_items SET id = ?, text = ? WHERE user_id = ?';
-    var deleteTodoItem = 'DELETE FROM todo_items WHERE id = ?';
-    var deleteTodoTag = 'DELETE FROM todo_item_tag WHERE todo_item_id = ? AND tag_id = ?'; 
-    var addTodoTag = 'INSERT INTO todo_item_tag(todo_item_id, tag_id) VALUES(?,?)';
-    var updateIsCompleted = 'UPDATE todo_items SET is_completed = ? WHERE id = ?';
-
     create(description, callback) {
         // Write code and query to create a new TODO item
-        dbConnection.query(createTodoItem, [46, 'take kids to school', F, 5], function (err, res) {
-            if (err) throw err;
-            else {
-                console.log('A new To DO item was created.');
+        const createTodoItem = 'INSERT INTO todo_items SET ?';
+        dbConnection.query(createTodoItem, description, function (err, res) {
+            if (err) {
+                callback(err);
+                return;
             }
+                callback(null, res);
         });
     }
 
     update(id, description, callback) {
         // Write code and query to update an existing TODO item
-        dbConnection.query(updateTodoItem, [47, 'wash clothes', 5], function (err, res) {
-            if (err) throw err;
-            else {
-                console.log('Updated todo item.');
+        const updateTodoItem = 'UPDATE todo_items SET text = ? WHERE user_id = ?';
+        dbConnection.query(updateTodoItem, id,description, function (err, res) {
+            if (err) {
+                callback(err);
+                return;
             }
+                callback(null, res);
         });
     }
 
     delete (id, callback) {
         // Write code and query to delete an existing TODO item
-        dbConnection.query(deleteTodoItem, [47], function (err, res) {
-            if (err) throw err;
-            else {
-                console.log('Todo item deleted');
+        const deleteTodoItem = 'DELETE FROM todo_items WHERE id = ?';
+        dbConnection.query(deleteTodoItem, id, function (err, res) {
+            if (err) {
+                callback(err);
+                return; 
             }
+                callback(null, res);
         });
     }
 
     tagTodoItem(todoItemId, tagId, callback) {
         // Write code and query add a tag to a TODO item
-        dbConnection.query(addTodoTag, [48,5], function (err, res) {
-            if (err) throw err;
-            else {
-                console.log('Todo item tag added.');
+        const addTodoTag = 'INSERT INTO todo_item_tag SET ?';
+        dbConnection.query(addTodoTag, todoItemId, tagId, function (err, res) {
+            if (err) {
+                callback(err);
+                return; 
             }
+                callback(null, res);
         }); 
     }
 
-    untagTodoItem(todoItemId, tagId, callback) {
+    untagTodoItem([todoItemId, tagId], callback) {
         // Write code and query remove a tag from a TODO item
-        dbConnection.query(deleteTodoTag, [43,3], function (err, res) {
-            if (err) throw err;
-            else {
-                console.log('Todo item tag deleted.');
+        const deleteTodoTag = 'DELETE FROM todo_item_tag WHERE todo_item_id = ? AND tag_id = ?'; 
+        dbConnection.query(deleteTodoTag, [todoItemId, tagId], function (err, res) {
+            if (err) {
+                callback(err);
+                return;
             }
+                callback(null, res);
         }); 
     }
 
     markCompleted(todoItemId, callback) {
         // Write code to mark a TODO item as completed
-        dbConnection.query(updateIsCompleted, [46, T], function (err, results, fields) {    // deleted a ")" 
+        const updateIsCompleted = 'UPDATE todo_items SET is_completed = TRUE WHERE id = ?';
+        dbConnection.query(updateIsCompleted, todoItemId, function (err, results, fields) {    // deleted a ")" 
             if (err) {
                 callback(err);
-                console.log('unable to mark todo item as completed.');
                 return;
             }
-
             callback(null, results);
-            console.log('todo item marked as completed');
         });
     }
 
@@ -96,7 +97,7 @@ class TodoModel {
 
 const dbConnection = mysql.createConnection({
     host: 'localhost',
-    user: 'todo user',
+    user: 'todo',
     password: 'password',
     database: 'todo_app'
 });
@@ -116,5 +117,46 @@ dbConnection.connect(function (err) {
         }
 
         console.log("existing todo items:", todoItems);
+    });
+
+    todoModel.create({text: 'go to conference', user_id: 5}, function(err, res){
+        if (err){
+            console.log('unable to create new TO DO item', err);
+        }
+        console.log('A new To DO item was successfully created');
+    });
+
+    todoModel.update([3,'prepare for class discussions'], function(err, res){
+        if (err){
+            console.log('unable to update TO DO item', err);
+        }
+        console.log('Updated TO DO item successfully');
+    });
+
+    todoModel.delete(42, function(err,res){
+        if (err){
+            console.log('unable to delete existing TO DO item', err);
+        }
+        console.log('TO DO item successfully deleted');
+    });
+
+    todoModel.tagTodoItem({todo_item_id:41, tag_id:2}, function(err,res){
+        if (err){
+            console.log('unable to add tag to TO DO item', err);
+        }
+        console.log('TO DO item tag successfully added.');
+    });
+
+    todoModel.untagTodoItem([45,1], function(err,res){
+        if(err){
+            console.log('unable to delete tag from TO DO item', err);
+        }
+        console.log('TO DO item tag successfully deleted.');
+    });
+    todoModel.markCompleted(42, function(err, res){
+        if (err){
+            console.log('unable to mark TO DO item as completed', err);
+        }
+        console.log('TO DO item successfully marked as completed');
     });
 });
