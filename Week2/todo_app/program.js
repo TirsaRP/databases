@@ -119,7 +119,7 @@ dbConnection.connect(function (err) {
         console.log("existing todo items:", todoItems);
     });
 
-    todoModel.create({text: 'go to conference', user_id: 5}, function(err, res){
+    todoModel.create({text: 'go to conference', user_id: 4}, function(err, res){
         if (err){
             console.log('unable to create new TO DO item', err);
         }
@@ -140,7 +140,7 @@ dbConnection.connect(function (err) {
         console.log('TO DO item successfully deleted');
     });
 
-    todoModel.tagTodoItem({todo_item_id:41, tag_id:2}, function(err,res){
+    todoModel.tagTodoItem({todo_item_id:47, tag_id:5}, function(err,res){
         if (err){
             console.log('unable to add tag to TO DO item', err);
         }
